@@ -4,6 +4,14 @@ Veja abaixo uma captura de tela do jogo de Pacman:
 
 !['Jogo de Pacman em Java'](pacman.png)
 
+## Detalhes técnicos
+
+Esse jogo foi produzido em Java e depende do JRE8 ou superior para funcionar. Os gráficos foram feitos com uso de primitivas gráficas. Logo, os gráficos do jogo são conjuntos de polígonos, linhas, retângulos e círculos. Os personagens e outros objetos do jogo não foram desenhados com pixelart!
+
+Os arquivos de áudio estão em formato MP3 e estão embutidos no jar da aplicação, junto com a biblioteca de audio JLayer para java.
+
+Esta foi uma ótima oportunidade para aplicar alguns padrões de projeto e separar a lógica da aplicação dos gráficos e interface gráfica.
+
 ## Como executar?
 
 Para rodar o jogo, basta baixar o arquivo Pacman-5.0.jar e rodar executando o seguinte comando:
