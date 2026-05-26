@@ -12,6 +12,12 @@ Os arquivos de áudio estão em formato MP3 e estão embutidos no jar da aplica�
 
 Esta foi uma ótima oportunidade para aplicar alguns padrões de projeto e separar a lógica da aplicação dos gráficos e interface gráfica.
 
+## A inteligência artificial dos monstrinhos
+
+Foi implantado para o algoritmo de movimento dos personagens monstrinhos o A*, um algoritmo de inteligência artificial simbólica que é uma variação do algorítmo do caminho mínimo de Dijkstra que pode ser aplicado em jogos com obstáculos para determinar o caminho mais curto de uma origem até um destino.
+
+Graças ao A*, os monstrinhos chegam tão fácil até onde está o pacman, aumentando o nível de dificuldade do jogo.
+
 ## Como executar?
 
 Para rodar o jogo, basta baixar o arquivo Pacman-5.0.jar e rodar executando o seguinte comando:
