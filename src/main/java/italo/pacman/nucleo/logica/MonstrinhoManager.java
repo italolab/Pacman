@@ -1,6 +1,7 @@
 package italo.pacman.nucleo.logica;
 
 import italo.pacman.nucleo.logica.aestrela.PortaCelulaTiposCondicao;
+import italo.pacman.nucleo.logica.listener.MonstrinhoListener;
 import italo.pacman.nucleo.logica.util.MatematicaUtil;
 import italo.pacman.nucleo.logica.util.TodosUtils;
 import italo.pacman.nucleo.to.Fase;
@@ -15,6 +16,8 @@ public class MonstrinhoManager {
     private final TodosManagers managers;
 
     private final PortaCelulaTiposCondicao portaCTipoCondicao = new PortaCelulaTiposCondicao();
+    
+    private MonstrinhoListener monstrinhoListener = null;
     
     public MonstrinhoManager( TodosManagers managers, TodosUtils utils ) {
         this.utils = utils;
@@ -64,6 +67,9 @@ public class MonstrinhoManager {
             if ( estado == Monstrinho.FRACO || estado == Monstrinho.MELHORANDO ) {
                 monstrinho.setEstado( Monstrinho.MUITO_FRACO ); 
                 monstrinho.setControleFrequenciaMuitoFraco( frequencia );
+                
+                if ( monstrinhoListener != null )
+                	monstrinhoListener.estadoAlterado( monstrinho, estado );
             } else {
                 fase.setPerdeu( estado == Monstrinho.NORMAL ); 
             }        
@@ -75,12 +81,20 @@ public class MonstrinhoManager {
                     monstrinho.setConfigNovaDirDistanteFlag( true ); 
                     break;
                 case Monstrinho.FRACO:
-                    if ( estadoFracoDif > tempoEstadoFraco/2 )
+                    if ( estadoFracoDif > tempoEstadoFraco/2 ) {
                         monstrinho.setEstado( Monstrinho.MELHORANDO );
+                        
+                        if ( monstrinhoListener != null )
+                        	monstrinhoListener.estadoAlterado( monstrinho, estado );
+                    }
                     break;
                 case Monstrinho.MELHORANDO:
-                    if ( estadoFracoDif > tempoEstadoFraco )
+                    if ( estadoFracoDif > tempoEstadoFraco ) {
                         monstrinho.setEstado( Monstrinho.NORMAL );
+                        
+                        if ( monstrinhoListener != null )
+                        	monstrinhoListener.estadoAlterado( monstrinho, estado );
+                    }
                     break;
             }
         }
@@ -193,8 +207,15 @@ public class MonstrinhoManager {
             if ( m.getEstado() == Monstrinho.NORMAL ) {
                 m.setEstado( Monstrinho.FRACO );       
                 m.setControleFrequenciaFraco( frequencia ); 
+                
+                if ( monstrinhoListener != null )
+                	monstrinhoListener.estadoAlterado( m, Monstrinho.NORMAL );
             }
         }
     }
             
+    public void setMonstrinhoListener( MonstrinhoListener listener ) {
+    	this.monstrinhoListener = listener;
+    }
+    
 }

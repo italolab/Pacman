@@ -4,9 +4,9 @@ import italo.pacman.SistemaAplic;
 import italo.pacman.nucleo.to.Fase;
 import italo.pacman.nucleo.to.Jogo;
 import italo.pacman.nucleo.to.Monstrinho;
-import italo.pacman.nucleo.to.MoveResult;
 import italo.pacman.nucleo.to.Pacman;
 import italo.pacman.nucleo.to.Truque;
+import italo.pacman.sound.SoundManager;
 
 public class JogoThread extends Thread {
     
@@ -55,20 +55,22 @@ public class JogoThread extends Thread {
                         aplic.getTruqueManager().processaTruqueAtivado( truque );                                    
             } while( !jogo.isFim() && !fase.isVenceu() && !fase.isPerdeu() );
             
-            if ( !jogo.isFim() ) {
-                aplic.getJogoManager().delay( 3000 ); 
-                
+            if ( !jogo.isFim() ) {                
                 if ( fase.isPerdeu() ) {
                     if ( jogo.getNVidas() > 0 ) {
                         jogo.setNVidas( jogo.getNVidas() - 1 ); 
+                        aplic.getSoundManager().syncPlay( SoundManager.PERDEU ); 
                         fase.reinicia(); 
                     } else {
+                        aplic.getSoundManager().syncPlay( SoundManager.GAMEOVER );
                         jogo.inicializa( aplic.getJogoConfigInicial() );
                     }
                 } else {
                     if ( jogo.getFases().length-1 > jogo.getFaseCorrente() ) {
+                    	aplic.getSoundManager().syncPlay( SoundManager.PASSOU );
                         aplic.getJogoManager().proximaFase( jogo );
                     } else {
+                    	aplic.getSoundManager().syncPlay( SoundManager.ZEROU ); 
                         jogo.inicializa( aplic.getJogoConfigInicial() );
                     }
                 }
@@ -86,8 +88,10 @@ public class JogoThread extends Thread {
         int result = aplic.getPacmanManager().comeBolinha( fase, pacman );
         if ( result == Fase.BOLINHA ) {
             aplic.getJogoManager().incPontos( jogo, PONTUACAO_BOLINHA ); 
+            aplic.getSoundManager().asyncPlay( SoundManager.COMEU );             
         } else if ( result == Fase.BOLINHA_GRANDE ) {
             aplic.getJogoManager().incPontos( jogo, PONTUACAO_BOLINHA_GRANDE ); 
+            aplic.getSoundManager().asyncPlay( SoundManager.COMEU_BG ); 
             aplic.getMonstrinhoManager().pacmanComeuBolinhaGrande( fase, frequencia );
         }
         
